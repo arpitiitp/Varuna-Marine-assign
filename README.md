@@ -114,6 +114,13 @@ curl -X POST "http://localhost:3001/pools" \
 
 ## Platform Demonstration
 
-Below is a live recorded walkthrough of the platform interacting with the Routes registry, the isolated Banking execution, and the live Article 21 Pooling simulator evaluating runtime mathematical constraints:
+Below are screenshots of the live platform interacting with the Routes registry, the isolated Banking execution, and the live Article 21 Pooling simulator evaluating runtime mathematical constraints:
 
-![FuelEU Platform Walkthrough Demo](./docs/fueleu_demo.webp)
+**Routes Registry** — vessel filtering across all seeded routes:
+![FuelEU Routes Registry](./docs/fueleu_routes.png)
+
+**Banking Dashboard (Art. 20)** — compliance balance loading for R001, 2024:
+![FuelEU Banking Dashboard](./docs/fueleu_banking.png)
+
+**Pooling Simulator (Art. 21)** — live projected pool sum with constraint validation:
+![FuelEU Pooling Simulator](./docs/fueleu_pooling.png)
