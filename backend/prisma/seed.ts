@@ -12,7 +12,11 @@ async function main() {
     { routeId: 'R002', vesselType: 'BulkCarrier', fuelType: 'LNG', year: 2024, ghgIntensity: 88.0, fuelConsumption: 4800, distance: 11500, totalEmissions: 4200, isBaseline: false },
     { routeId: 'R003', vesselType: 'Tanker', fuelType: 'MGO', year: 2024, ghgIntensity: 93.5, fuelConsumption: 5100, distance: 12500, totalEmissions: 4700, isBaseline: false },
     { routeId: 'R004', vesselType: 'RoRo', fuelType: 'HFO', year: 2025, ghgIntensity: 89.2, fuelConsumption: 4900, distance: 11800, totalEmissions: 4300, isBaseline: false },
-    { routeId: 'R005', vesselType: 'Container', fuelType: 'LNG', year: 2025, ghgIntensity: 90.5, fuelConsumption: 4950, distance: 11900, totalEmissions: 4400, isBaseline: false }
+    { routeId: 'R005', vesselType: 'Container', fuelType: 'LNG', year: 2025, ghgIntensity: 90.5, fuelConsumption: 4950, distance: 11900, totalEmissions: 4400, isBaseline: false },
+    // 2025 Mock variants to allow out-of-the-box banking tests on default UI inputs
+    { routeId: 'R001', vesselType: 'Container', fuelType: 'HFO', year: 2025, ghgIntensity: 89.0, fuelConsumption: 5200, distance: 12100, totalEmissions: 4600, isBaseline: false },
+    { routeId: 'R002', vesselType: 'BulkCarrier', fuelType: 'LNG', year: 2025, ghgIntensity: 87.5, fuelConsumption: 4900, distance: 11600, totalEmissions: 4300, isBaseline: false },
+    { routeId: 'R003', vesselType: 'Tanker', fuelType: 'MGO', year: 2025, ghgIntensity: 92.0, fuelConsumption: 5000, distance: 12400, totalEmissions: 4600, isBaseline: false }
   ];
 
   await prisma.route.createMany({
