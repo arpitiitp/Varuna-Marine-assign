@@ -11,14 +11,16 @@ vi.mock('../core/application/usePoolingTab', () => ({
 const mockUsePoolingTab = usePoolingTab as ReturnType<typeof vi.fn>;
 
 describe('PoolingTab Component', () => {
-  it('renders correctly and dispatches createPool action', () => {
-    const mockCreatePool = vi.fn();
+  it('renders correctly and dispatches verifyPool action', () => {
+    const mockVerifyPool = vi.fn();
     mockUsePoolingTab.mockReturnValue({
       pools: [],
       loading: false,
       error: null,
       successMsg: null,
-      createPool: mockCreatePool,
+      poolPreview: null,
+      verifyPool: mockVerifyPool,
+      createPool: vi.fn(),
       fetchPools: vi.fn()
     });
 
@@ -31,9 +33,26 @@ describe('PoolingTab Component', () => {
     fireEvent.change(yearInput, { target: { value: '2025' } });
     fireEvent.change(membersInput, { target: { value: 'R001, R002' } });
 
-    const createButton = screen.getByText('Create Pool');
-    fireEvent.click(createButton);
-    expect(mockCreatePool).toHaveBeenCalledWith(2025, ['R001', 'R002']);
+    const verifyButton = screen.getByText('Verify Members');
+    fireEvent.click(verifyButton);
+    expect(mockVerifyPool).toHaveBeenCalledWith(2025, ['R001', 'R002']);
+  });
+
+  it('renders projected sum when a valid poolPreview is active', () => {
+    mockUsePoolingTab.mockReturnValue({
+      pools: [],
+      loading: false,
+      error: null,
+      successMsg: null,
+      poolPreview: { sum: 500, isValid: true },
+      verifyPool: vi.fn(),
+      createPool: vi.fn(),
+      fetchPools: vi.fn()
+    });
+
+    render(<PoolingTab />);
+    expect(screen.getByText('Projected Pool Sum')).toBeInTheDocument();
+    expect(screen.getByText('Valid Pool ✓')).toBeInTheDocument();
   });
 
   it('renders Active Pools list when pools data exists', () => {

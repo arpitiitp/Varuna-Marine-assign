@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import { usePoolingTab } from '../../../core/application/usePoolingTab';
 
 export function PoolingTab() {
-  const { pools, loading, error, successMsg, createPool } = usePoolingTab();
+  const { pools, loading, error, successMsg, poolPreview, verifyPool, createPool } = usePoolingTab();
   const [year, setYear] = useState('');
   const [members, setMembers] = useState('');
 
-  const handleCreate = () => {
+  const handleVerify = () => {
     if (year && members) {
+      const shipIds = members.split(',').map(s => s.trim()).filter(Boolean);
+      verifyPool(parseInt(year), shipIds);
+    }
+  };
+
+  const handleCreate = () => {
+    if (year && members && poolPreview?.isValid) {
       const shipIds = members.split(',').map(s => s.trim()).filter(Boolean);
       createPool(parseInt(year), shipIds);
     }
@@ -44,13 +51,38 @@ export function PoolingTab() {
             />
           </div>
           <button
-            onClick={handleCreate}
+            onClick={handleVerify}
             disabled={loading}
-            className="w-full sm:w-auto px-6 py-2.5 bg-white text-blue-900 font-bold rounded-lg shadow-sm hover:bg-blue-50 transition-colors disabled:opacity-70"
+            className="w-full sm:w-auto px-6 py-2.5 bg-blue-700 text-white font-bold rounded-lg shadow-sm hover:bg-blue-600 transition-colors disabled:opacity-70"
+          >
+            Verify Members
+          </button>
+          <button
+            onClick={handleCreate}
+            disabled={loading || !poolPreview?.isValid}
+            className="w-full sm:w-auto px-6 py-2.5 bg-white text-blue-900 font-bold rounded-lg shadow-sm hover:bg-blue-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Simulating...' : 'Create Pool'}
           </button>
         </div>
+
+        {poolPreview && !error && (
+          <div className="mt-6 flex items-center justify-between p-4 rounded-xl bg-blue-950/40 border border-blue-800/50 relative z-10">
+            <div>
+              <span className="block text-xs uppercase tracking-wider text-blue-300 font-semibold mb-1">Projected Pool Sum</span>
+              <span className={`text-2xl font-bold ${poolPreview.isValid ? 'text-emerald-400' : 'text-rose-400'}`}>
+                {poolPreview.sum > 0 ? '+' : ''}{poolPreview.sum.toLocaleString()} gCO₂e
+              </span>
+            </div>
+            <div>
+              {poolPreview.isValid ? (
+                <span className="flex items-center gap-2 text-emerald-400 text-sm font-medium">Valid Pool ✓</span>
+              ) : (
+                <span className="flex items-center gap-2 text-rose-400 text-sm font-medium">Invalid Sum ✗</span>
+              )}
+            </div>
+          </div>
+        )}
 
         {error && <div className="mt-4 p-3 bg-red-900/50 border border-red-500/50 text-red-200 rounded-lg text-sm relative z-10">{error}</div>}
         {successMsg && <div className="mt-4 p-3 bg-emerald-900/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-sm relative z-10">{successMsg}</div>}

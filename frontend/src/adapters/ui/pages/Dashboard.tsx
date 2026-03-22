@@ -42,8 +42,8 @@ export function Dashboard() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`
                   whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200
-                  ${activeTab === tab.id 
-                    ? 'border-blue-600 text-blue-600' 
+                  ${activeTab === tab.id
+                    ? 'border-blue-600 text-blue-600'
                     : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'}
                 `}
                 aria-current={activeTab === tab.id ? 'page' : undefined}
@@ -66,7 +66,7 @@ export function Dashboard() {
       <footer className="bg-white border-t border-slate-200 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <p className="text-center text-sm text-slate-500">
-            FuelEU Maritime Platform - Full-Stack Assignment Demo
+            FuelEU Maritime Platform
           </p>
         </div>
       </footer>
