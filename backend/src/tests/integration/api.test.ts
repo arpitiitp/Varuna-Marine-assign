@@ -15,10 +15,26 @@ const mockPoolingService = {
   createPool: jest.fn().mockResolvedValue({ id: 'pool-mock-1', year: 2025 })
 };
 
+import { createBankingRouter } from '../../adapters/inbound/http/banking.controller';
+
+const mockBankingService = {
+  computeCB: jest.fn(),
+  getAdjustedCB: jest.fn(),
+  getBankRecords: jest.fn(),
+  bankSurplus: jest.fn().mockImplementation(async (shipId) => {
+    if (shipId === 'DEFICIT_SHIP') throw new Error("Compliance Balance is not positive");
+    return { id: 'bank-1' };
+  }),
+  applyBankedSurplus: jest.fn().mockImplementation(async (shipId, year, amount) => {
+    if (amount > 100) throw new Error("Insufficient banked surplus");
+  })
+};
+
 const app = express();
 app.use(express.json());
 app.use('/routes', createRoutesRouter(mockRouteService as any));
-app.use('/pools', createPoolingRouter(mockPoolingService as any));
+app.use('/', createPoolingRouter(mockPoolingService as any));
+app.use('/', createBankingRouter(mockBankingService as any));
 
 describe('Integration Tests - HTTP APIs', () => {
   it('GET /routes returns 200 and data', async () => {
@@ -32,7 +48,7 @@ describe('Integration Tests - HTTP APIs', () => {
     const res = await request(app)
       .post('/pools')
       .send({ year: 2025, members: ['S1', 'S2'] });
-    
+
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.pool.id).toBe('pool-mock-1');
@@ -42,5 +58,17 @@ describe('Integration Tests - HTTP APIs', () => {
     const res = await request(app).post('/pools').send({ year: 2025 });
     expect(res.status).toBe(400);
     expect(res.body.error).toContain("Invalid payload");
+  });
+
+  describe('Banking Edge Cases', () => {
+    it('POST /banking/bank fails if CB is not positive', async () => {
+      const res = await request(app).post('/banking/bank').send({ shipId: 'DEFICIT_SHIP', year: 2025 });
+      expect(res.status).toBe(400);
+    });
+
+    it('POST /banking/apply fails if amount exceeds banked surplus', async () => {
+      const res = await request(app).post('/banking/apply').send({ shipId: 'S1', year: 2025, amount: 50000 });
+      expect(res.status).toBe(400);
+    });
   });
 });

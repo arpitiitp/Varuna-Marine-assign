@@ -5,32 +5,40 @@ export function RoutesTab() {
   const { routes, loading, error, setBaseline } = useRoutesTab();
   const [filterVessel, setFilterVessel] = useState('');
   const [filterFuel, setFilterFuel] = useState('');
+  const [filterYear, setFilterYear] = useState('');
 
   if (loading) return <div className="p-4 text-center text-slate-500 animate-pulse">Loading routes data...</div>;
   if (error) return <div className="p-4 text-center text-red-500 bg-red-50 rounded-lg">{error}</div>;
 
   const filteredRoutes = routes.filter(r => {
-    return (filterVessel ? r.vesselType.includes(filterVessel) : true) &&
-           (filterFuel ? r.fuelType.includes(filterFuel) : true);
+    return (filterVessel ? r.vesselType.toUpperCase().includes(filterVessel.toUpperCase()) : true) &&
+      (filterFuel ? r.fuelType.toUpperCase().includes(filterFuel.toUpperCase()) : true) &&
+      (filterYear ? r.year.toString().includes(filterYear) : true);
   });
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
         <h2 className="text-xl font-bold tracking-tight text-slate-800">Route Registry</h2>
-        
-        <div className="flex space-x-3">
-          <input 
-            type="text" 
-            placeholder="Filter by Vessel..." 
+
+        <div className="flex flex-wrap gap-3">
+          <input
+            type="text"
+            placeholder="Filter by Vessel..."
             className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             value={filterVessel} onChange={(e) => setFilterVessel(e.target.value)}
           />
-          <input 
-            type="text" 
-            placeholder="Filter by Fuel..." 
+          <input
+            type="text"
+            placeholder="Filter by Fuel..."
             className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             value={filterFuel} onChange={(e) => setFilterFuel(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Filter by Year..."
+            className="px-4 py-2 w-32 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            value={filterYear} onChange={(e) => setFilterYear(e.target.value)}
           />
         </div>
       </div>
@@ -72,7 +80,7 @@ export function RoutesTab() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     {!route.isBaseline && (
-                      <button 
+                      <button
                         onClick={() => setBaseline(route.id)}
                         className="text-sm px-3 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition-colors shadow-sm font-medium"
                       >
