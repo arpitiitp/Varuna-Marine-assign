@@ -13,7 +13,10 @@ export class BankingService implements IBankingUseCases {
 
   async computeCB(shipId: string, year: number): Promise<ShipComplianceEntity> {
     // 1. Fetch route data equivalent to the ship for that year (simplified mapping)
-    const route = await this.routeRepo.getRouteById(shipId);
+    let route = null;
+    if (this.routeRepo.findByRouteIdAndYear) {
+      route = await this.routeRepo.findByRouteIdAndYear(shipId, year);
+    }
     if (!route || route.year !== year) {
         throw new Error(`Data for Ship/Route ${shipId} in year ${year} not found.`);
     }

@@ -6,4 +6,5 @@ export interface IRouteRepository {
   getBaselineRoute(): Promise<RouteEntity | null>;
   setBaselineRoute(id: string): Promise<void>;
   createMany(routes: Omit<RouteEntity, "id">[]): Promise<void>;
+  findByRouteIdAndYear?(routeId: string, year: number): Promise<RouteEntity | null>;
 }
