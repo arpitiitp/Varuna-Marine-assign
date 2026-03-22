@@ -38,7 +38,7 @@ export function BankingTab() {
               type="number"
               className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
               value={year} onChange={e => setYear(e.target.value)}
-              placeholder="e.g. 2025"
+              placeholder="e.g. 2024"
             />
           </div>
           <button
