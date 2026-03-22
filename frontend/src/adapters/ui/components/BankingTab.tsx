@@ -4,8 +4,8 @@ import { useBankingTab } from '../../../core/application/useBankingTab';
 export function BankingTab() {
   const { cbRecord, adjustedCb, bankEntries, loading, error, loadShipData, bankSurplus, applyBanked } = useBankingTab();
 
-  const [shipId, setShipId] = useState('R001');
-  const [year, setYear] = useState('2025');
+  const [shipId, setShipId] = useState('');
+  const [year, setYear] = useState('');
   const [applyAmount, setApplyAmount] = useState('');
 
   const handleLoad = () => {
@@ -21,12 +21,12 @@ export function BankingTab() {
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-        <h2 className="text-xl font-bold tracking-tight text-slate-800 mb-4">Banking Dashboard (Article 20)</h2>
+        <h2 className="text-xl font-bold tracking-tight text-slate-800 mb-4">Banking Dashboard</h2>
         <div className="flex flex-col sm:flex-row gap-4 items-end">
           <div className="flex-1">
             <label className="block text-sm font-medium text-slate-700 mb-1">Route / Ship ID</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
               value={shipId} onChange={e => setShipId(e.target.value)}
               placeholder="e.g. R001"
@@ -34,14 +34,14 @@ export function BankingTab() {
           </div>
           <div className="flex-1">
             <label className="block text-sm font-medium text-slate-700 mb-1">Compliance Year</label>
-            <input 
-              type="number" 
+            <input
+              type="number"
               className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
               value={year} onChange={e => setYear(e.target.value)}
               placeholder="e.g. 2025"
             />
           </div>
-          <button 
+          <button
             onClick={handleLoad}
             className="w-full sm:w-auto px-6 py-2 bg-slate-900 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors shadow-sm"
           >
@@ -70,7 +70,7 @@ export function BankingTab() {
             </div>
 
             <div className="mt-6 pt-6 border-t border-slate-100">
-              <button 
+              <button
                 onClick={() => bankSurplus(shipId, parseInt(year))}
                 disabled={cbRecord.cbGco2eq <= 0}
                 className="w-full py-2.5 px-4 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium transition-colors"
@@ -86,8 +86,8 @@ export function BankingTab() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Amount to Apply (gCO₂e)</label>
-                  <input 
-                    type="number" 
+                  <input
+                    type="number"
                     placeholder="Enter amount..."
                     className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                     value={applyAmount} onChange={e => setApplyAmount(e.target.value)}
@@ -97,7 +97,7 @@ export function BankingTab() {
             </div>
 
             <div className="mt-6 pt-6 border-t border-slate-100">
-              <button 
+              <button
                 onClick={handleApply}
                 disabled={cbRecord.cbGco2eq >= 0 || !applyAmount}
                 className="w-full py-2.5 px-4 bg-blue-50 text-blue-700 hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium transition-colors"

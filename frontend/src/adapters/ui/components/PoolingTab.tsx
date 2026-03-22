@@ -3,8 +3,8 @@ import { usePoolingTab } from '../../../core/application/usePoolingTab';
 
 export function PoolingTab() {
   const { pools, loading, error, successMsg, createPool } = usePoolingTab();
-  const [year, setYear] = useState('2025');
-  const [members, setMembers] = useState('R001, R004'); // default example matching ships
+  const [year, setYear] = useState('');
+  const [members, setMembers] = useState('');
 
   const handleCreate = () => {
     if (year && members) {
@@ -17,10 +17,10 @@ export function PoolingTab() {
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="bg-gradient-to-r from-blue-900 to-indigo-900 p-8 rounded-2xl shadow-lg border border-blue-800 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 p-12 opacity-10">
-          <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" /></svg>
         </div>
-        
-        <h2 className="text-2xl font-bold tracking-tight mb-2 relative z-10">Pooling Simulator (Article 21)</h2>
+
+        <h2 className="text-2xl font-bold tracking-tight mb-2 relative z-10">Pooling Simulator</h2>
         <p className="text-blue-200 mb-6 max-w-2xl relative z-10 text-sm leading-relaxed">
           Create a pool to offset deficits. The system will ensure that the sum of the adjusted Compliance Balances is positive, and enforce that no deficit ship exits worse, while no surplus ship exits negative.
         </p>
@@ -28,22 +28,22 @@ export function PoolingTab() {
         <div className="flex flex-col sm:flex-row gap-4 relative z-10 items-end">
           <div className="flex-1">
             <label className="block text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">Compliance Year</label>
-            <input 
-              type="number" 
+            <input
+              type="number"
               className="w-full px-4 py-2.5 bg-blue-950/50 border border-blue-700/50 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-white placeholder-blue-700"
               value={year} onChange={e => setYear(e.target.value)}
             />
           </div>
           <div className="flex-[2]">
             <label className="block text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">Member Ships (Comma Separated)</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               className="w-full px-4 py-2.5 bg-blue-950/50 border border-blue-700/50 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none text-white placeholder-blue-700"
               value={members} onChange={e => setMembers(e.target.value)}
               placeholder="e.g. R001, R002, R003"
             />
           </div>
-          <button 
+          <button
             onClick={handleCreate}
             disabled={loading}
             className="w-full sm:w-auto px-6 py-2.5 bg-white text-blue-900 font-bold rounded-lg shadow-sm hover:bg-blue-50 transition-colors disabled:opacity-70"
@@ -51,7 +51,7 @@ export function PoolingTab() {
             {loading ? 'Simulating...' : 'Create Pool'}
           </button>
         </div>
-        
+
         {error && <div className="mt-4 p-3 bg-red-900/50 border border-red-500/50 text-red-200 rounded-lg text-sm relative z-10">{error}</div>}
         {successMsg && <div className="mt-4 p-3 bg-emerald-900/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-sm relative z-10">{successMsg}</div>}
       </div>
@@ -62,7 +62,7 @@ export function PoolingTab() {
           {pools.map((pool, i) => (
             <div key={i} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="px-6 py-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-                <span className="font-mono text-sm font-semibold text-slate-700">Pool ID: {pool.id.substring(0,8)}...</span>
+                <span className="font-mono text-sm font-semibold text-slate-700">Pool ID: {pool.id.substring(0, 8)}...</span>
                 <span className="px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600">Year: {pool.year}</span>
               </div>
               <table className="w-full text-sm text-left">
