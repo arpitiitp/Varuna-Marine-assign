@@ -23,8 +23,14 @@ const cb = (targetIntensity - actualGhgIntensity) * fuelConsumption * 41000;
 ## Validation / Corrections
 1. **Prisma Config Edge-case**: Prisma v6 introduces a `prisma.config.ts` dynamically. The AI agent blindly attempted to push `npx prisma generate` which broke due to unresolved `tsx` dependencies in raw environments.
     - **Correction**: Directed the agent to securely catch the error, remove the dynamic config file, and re-run.
-2. **Neon Database Seeding**: Initially drafted to use `sqlite` for frictionless reviewer testing, but the brief demanded PostgreSQL.
+2. **Neon Database Seeding**: Initially drafted to use `sqlite` for frictionless reviewertesting, but the brief demanded PostgreSQL.
     - **Correction**: Pushed the agent to pause execution, request the proper Neon PostgreSQL URI, and re-deploy the seed.
+3. **Implicit Framework Execution Fails**: The agent attempted to run `npx prisma db seed` which exited with `0` but failed to seed due to Prisma v6 requiring strict TSX bindings in `package.json`.
+    - **Correction**: Guided the agent to parse `package.json` natively and inject the execution mapping.
+
+### Example 3: E2E Verification & UI-Backend Contract Disconnects
+**Workflow**: After unit testing the core services, the `Pooling` and `Banking` tabs were manually invoked by an autonomous browser agent. The agent discovered an immediate 404 because the React UI passed natural strings (e.g. `R001`) into Prisma's `getRouteById` expectation of a raw PostgreSQL UUID.
+**Correction**: The agent rapidly re-architected the `PrismaRouteRepository` to strictly map natural keys utilizing `findByRouteIdAndYear()`, cleanly bypassing the UUID requirement while preserving Hexagonal Isolation. Vitest JS-DOM testing was subsequently instantiated to ensure UI components accurately exposed the mapped attributes.
 
 ## Observations
 - **Time Saving**: The agent was invaluable at setting up the 15+ boilerplate directories required by Hexagonal Architecture simultaneously, along with wiring up React Tailwind classes seamlessly. It also rapidly constructed the basic Unit test skeletons in Jest.

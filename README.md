@@ -27,7 +27,7 @@ Update the `DATABASE_URL` in `backend/.env` with your PostgreSQL instance (e.g. 
 cd backend
 npm install
 npx prisma db push
-npx tsx prisma/seed.ts  # Seeds the 5 mock routes
+npx prisma db seed      # Executes the tsx seed script mapped natively in package.json
 npm run dev
 ```
 The backend API runs on `http://localhost:3001`.
@@ -41,10 +41,15 @@ npm run dev
 The frontend UI runs on `http://localhost:5173`.
 
 ## Testing
-The core Hexagonal domain logic is heavily tested using Jest.
+The core Hexagonal domain logic is strictly type-checked (`strict: true`) and heavily tested using Jest (`backend`). The UI component adapters are asserted using Vitest and React Testing Library (`frontend`).
 ```bash
+# Backend (Supertest integrations & Jest unit logic)
 cd backend
+npm test
+
+# Frontend (Vitest JSDOM components)
+cd frontend
 npm test
 ```
 - Includes mathematically verified validations of the greedy Pool algorithms.
-- Includes integration checks leveraging Supertest.
+- Includes integration checks leveraging Supertest to isolate constraints (e.g. negative CB banking blocks).

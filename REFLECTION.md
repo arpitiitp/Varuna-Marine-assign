@@ -14,5 +14,6 @@ If I were to repeat this assignment, I would:
 1. **Contract-First API Design:** I would force the AI to draft an OpenAPI specification first rather than immediately jumping into TypeScript interfaces. This creates an even stronger boundary between the Frontend and Backend adapters.
 2. **Context Masking:** AI agents often lose track of complex regulatory formulas if their context window fills up with Tailwind classes. Next time, I would enforce completely separate, scoped sessions—one agent purely for mathematically testing the Pool allocations, and a separate session strictly for UI generation.
 3. **Data Mocking Strategy:** Allow the AI to hallucinate diverse edge-case datasets (e.g., ships entering a pool with zero CB, boundary target differences of 0.001%) within a purely simulated sandbox before attempting DB integration.
+4. **E2E Browser Agents over Unit Mocks:** Unit testing the backend cleanly passed simply because the mocks injected natural strings. A live autonomous browser verification instantly caught a catastrophic UI-DB `UUID` disconnect that unit tests completely blinded us to. Next time, I will enforce E2E browser runs after every major structural revision.
 
 In summary, leveraging AI agents elevates development speed but mandates an order-of-magnitude increase in architectural discipline.
