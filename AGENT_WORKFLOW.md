@@ -33,10 +33,10 @@ const cb = (targetIntensity - actualGhgIntensity) * fuelConsumption * 41000;
 **Correction**: The agent rapidly re-architected the `PrismaRouteRepository` to strictly map natural keys utilizing `findByRouteIdAndYear()`, cleanly bypassing the UUID requirement while preserving Hexagonal Isolation. Vitest JS-DOM testing was subsequently instantiated to ensure UI components accurately exposed the mapped attributes.
 
 ## Observations
-- **Time Saving**: The agent was invaluable at setting up the 15+ boilerplate directories required by Hexagonal Architecture simultaneously, along with wiring up React Tailwind classes seamlessly. It also rapidly constructed the basic Unit test skeletons in Jest.
-- **Hallucinations**: The agent assumed `@types/node` was not present in the Vite scaffolding configuration initially and attempted to double-install it.
-- **Combining Tools**: Utilizing Bash scripting internally alongside file-writers allowed the agent to install dependencies, run migrations, and immediately verify the generated code without human intervention.
+- **Where agent saved time**: The agent was invaluable at setting up the 15+ boilerplate directories required by Hexagonal Architecture simultaneously, along with wiring up React Tailwind classes effortlessly.
+- **Where it failed or hallucinated**: The agent blindly attempted to execute generic database seeds through dynamic wrappers and failed to account for Node execution contexts (e.g., TSX missing maps). It also repeatedly struggled with mapping DOM strings into precise React Router UUID lookups gracefully.
+- **How I combined tools effectively**: Utilizing autonomous bash scripting internally alongside file-writers allowed the agent to install testing dependencies, run Vitest migrations, and immediately verify the generated code without human intervention.
 
 ## Best Practices Followed
-- **Architectural Control**: The agent wasn't given free rein to write the whole app in a single file or a traditional MVC setup. It was explicitly locked into creating `Ports/in` and `Ports/out` to map dependencies backwards.
-- **Test-Driven AI**: The agent was instructed to craft Unit Tests for `PoolingService` and `BankingService` *before* moving to the React Frontend, proving the core domain logic mathematically.
+- **Utilized Cursor's `tasks.md` for generation**: Maintained a strict `task.md` execution list to prevent the agent from context switching and kept its focus purely scoped.
+- **Agentic Testing Control**: The agent wasn't given free rein. It was explicitly locked into Test-Driven AI, crafting Unit Tests for `PoolingService` and `BankingService` *before* touching React, proving the math first.

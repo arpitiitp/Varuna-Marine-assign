@@ -10,13 +10,14 @@ export class PoolingService implements IPoolingUseCases {
   ) {}
 
   async createPool(year: number, shipIds: string[]): Promise<PoolEntity> {
-    if (shipIds.length === 0) {
-      throw new Error('Pool must have at least one member');
+    const uniqueShipIds = Array.from(new Set(shipIds));
+    if (uniqueShipIds.length < 2) {
+      throw new Error('Invalid Pool: A pool must consist of at least two distinct member ships.');
     }
 
-    // 1. Fetch adjusted CB for each ship
+    // 1. Fetch adjusted CB for each distinct ship
     const membersWithInitialCB = await Promise.all(
-      shipIds.map(async (shipId) => {
+      uniqueShipIds.map(async (shipId) => {
         const adjustedCb = await this.bankingUseCases.getAdjustedCB(shipId, year);
         return { shipId, cbBefore: adjustedCb, cbAfter: adjustedCb };
       })

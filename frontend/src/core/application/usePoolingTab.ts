@@ -11,13 +11,18 @@ export function usePoolingTab() {
   const [poolPreview, setPoolPreview] = useState<{ sum: number, isValid: boolean } | null>(null);
 
   const verifyPool = async (year: number, memberShipIds: string[]) => {
-    if (!memberShipIds.length) return;
+    const uniqueShipIds = Array.from(new Set(memberShipIds));
+    if (uniqueShipIds.length < 2) {
+      setError('A pool must consist of at least two distinct member ships.');
+      setPoolPreview(null);
+      return;
+    }
     setLoading(true);
     setError(null);
     setSuccessMsg(null);
     try {
       let sum = 0;
-      for (const id of memberShipIds) {
+      for (const id of uniqueShipIds) {
         const res = await backendClient.getAdjustedCB(id, year);
         sum += res.adjustedCB;
       }
