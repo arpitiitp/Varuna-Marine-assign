@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  /* We can define custom theme variables here */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --color-primary-500: #0ea5e9;
+  --color-primary-600: #0284c7;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: #f8fafc;
+  color: #0f172a;
+}
