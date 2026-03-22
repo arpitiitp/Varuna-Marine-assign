@@ -1,8 +1,8 @@
 # AI Agent Workflow Log
 
 ## Agents Used
-- **Google DeepMind Antigravity Agent (Gemini)**: Acted as the primary coding sidekick, executing tool calls, scaffolding directories, and generating boilerplate code.
-- **Claude Code / Cursor**: Used implicitly via standard IDE environments as the guiding architect.
+- **Google Antigravity Agent (Gemini)**: Acted as the primary coding sidekick, executing tool calls, scaffolding directories, and generating boilerplate code.
+
 
 ## Prompts & Outputs
 ### Example 1: Scaffolding the Hexagonal Architecture
@@ -38,5 +38,5 @@ const cb = (targetIntensity - actualGhgIntensity) * fuelConsumption * 41000;
 - **How I combined tools effectively**: Utilizing autonomous bash scripting internally alongside file-writers allowed the agent to install testing dependencies, run Vitest migrations, and immediately verify the generated code without human intervention.
 
 ## Best Practices Followed
-- **Utilized Cursor's `tasks.md` for generation**: Maintained a strict `task.md` execution list to prevent the agent from context switching and kept its focus purely scoped.
+- **Utilized gemini's `tasks.md` for generation**: Maintained a strict `task.md` execution list to prevent the agent from context switching and kept its focus purely scoped.
 - **Agentic Testing Control**: The agent wasn't given free rein. It was explicitly locked into Test-Driven AI, crafting Unit Tests for `PoolingService` and `BankingService` *before* touching React, proving the math first.
