@@ -1,87 +1,116 @@
-# FuelEU Maritime Compliance Platform
+<div align="center">
+  <img src="https://img.shields.io/badge/FuelEU-Maritime%20Compliance-1d4ed8?style=for-the-badge&logo=anchor&logoColor=white" alt="FuelEU Logo">
+  
+  <h1>🚢 FuelEU Maritime Compliance Platform</h1>
+  
+  <p><strong>A modular, full-stack implementation of the FuelEU Maritime Regulation (EU)</strong></p>
+
+  <p>
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind" />
+    <img src="https://img.shields.io/badge/Node.js-43853D?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" />
+    <img src="https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  </p>
+</div>
+
+---
 
 A full-stack implementation of the FuelEU Maritime regulation modules focusing on Route Management, Emission Comparisons, Banking (Article 20), and Pooling (Article 21).
 
-## Architecture Summary
+Built with a focus on strict **Domain-Driven Design** and **Hexagonal Architecture**, utilizing an AI agent exclusively as a specialized assistant for targeted UI micro-interactions and complex FuelEU formula verification.
+
+## 📑 Table of Contents
+- [Architecture Summary](#-architecture-summary)
+- [Setup & Run Instructions](#-setup--run-instructions)
+- [Testing](#-testing)
+- [Sample Requests](#-sample-requests--responses)
+- [Platform Demonstration](#-platform-demonstration)
+
+---
+
+## 🏛 Architecture Summary
 
 This platform abandons traditional MVC structures in favor of a strict **Hexagonal Architecture (Ports & Adapters)** pattern. This ensures that the core regulatory business logic (FuelEU formulas) remains 100% framework-agnostic, decoupled from databases, HTTP routers, or UI frameworks.
 
 ### Backend Structure
-
 By isolating the mathematical domain, we guarantee that the complex FuelEU compliance formulas are protected from infrastructure changes.
 
 1. **`core/domain` (Entities & Value Objects):** 
    - Contains pure TypeScript representations of `Ship`, `ComplianceBalance`, and `Pool`.
-   - Embeds mathematically strictly typed formulas for calculating *Target GHG Intensities* and *Compliance Balances* (e.g., specific `41,000 MJ/t` energy mapping logic). 
-   - Absolutely zero dependencies on external libraries (no Express, no Prisma).
+   - Embeds mathematically strictly typed formulas for calculating *Target GHG Intensities* and *Compliance Balances* (e.g., specific `41,000 MJ/t` energy mapping). 
+   - Zero dependencies on external libraries.
+   
 2. **`core/ports` (Interfaces):**
-   - **Inbound Ports**: Interfaces like `IBankingUseCases` that define exactly what operations the UI is securely permitted to trigger.
-   - **Outbound Ports**: Interfaces like `IRouteRepository` that dictate the exact data contract the Core needs to retrieve or save data.
+   - **Inbound Ports**: Interfaces (e.g., `IBankingUseCases`) defining operations the UI is permitted to trigger.
+   - **Outbound Ports**: Interfaces (e.g., `IRouteRepository`) demanding specific data contracts.
+
 3. **`core/application` (Services):**
-   - Implements the mapped Inbound Ports. Example: `PoolingService.ts` handles the granular orchestration of verifying pool members, calculating projected balances, and throwing explicit errors if a pool sum dips beneath `0`.
-4. **`adapters/inbound` (Primary Adapters):**
-   - Contains the Express.js HTTP Controllers (e.g. `banking.controller.ts`). These adapters simply intercept HTTP request/response payloads, execute them against the pure Inbound Ports, and manage standard REST formatting.
-5. **`adapters/outbound` (Secondary Adapters):**
-   - Contains the explicit Prisma logic (`PrismaRouteRepository.ts`). This adapter translates the Core's Outbound Port data contracts into live PostgreSQL `SELECT`/`INSERT` queries.
+   - Implements the mapped Inbound Ports. Example: `PoolingService.ts` handles the granular orchestration of pool verifications.
+
+4. **`adapters/inbound` & `adapters/outbound`**:
+   - Contains the Express.js HTTP Controllers and the explicit Prisma logic (`PrismaRouteRepository.ts`). Translates domain contracts into live PostgreSQL queries.
 
 ### Frontend Structure
+The frontend cleanly mirrors the backend's architecture, structurally separating UI rendering from React effect lifecycles and HTTP boundaries.
 
-The frontend mirrors the backend's clean architecture entirely to structurally separate UI rendering from React effect lifecycles and HTTP boundaries.
+1. **`core/domain`**: Unified TypeScript interfaces strictly validating the backend DTOs.
+2. **`core/application`**: Custom asynchronous React Hooks (`useBankingTab.ts`, `usePoolingTab.ts`) resolving complex context bounds.
+3. **`adapters/infrastructure`**: Raw Axios clients executing pure network calls.
+4. **`adapters/ui`**: React layout components styled with TailwindCSS, deeply testable and 100% decoupled from the network layer.
 
-1. **`core/domain`**: 
-   - Houses unified TypeScript interfaces (`RouteData`, `ComparisonResult`) that strictly validate the backend DTOs.
-2. **`core/application`**: 
-   - Custom asynchronous React Hooks (`useBankingTab.ts`, `usePoolingTab.ts`).
-   - These hooks act as the Application layer orchestration for the frontend, absorbing API lifetimes, managing complex `loading`/`error` context bounds, and mapping validation states (like the Live Pool Preview checks).
-3. **`adapters/infrastructure`**: 
-   - Raw Axios clients (`backendClient.ts`) that execute the HTTP network calls. They parse network responses cleanly back into reliable Domain objects.
-4. **`adapters/ui`**: 
-   - Pure React layout components styled exclusively with TailwindCSS v4. They rely entirely on Application Hooks for logic cascades, meaning the UI is 100% decoupled from the network layer and deeply testable.
+---
 
-## Setup & Run Instructions
+## 🚀 Setup & Run Instructions
+
 **Prerequisites**: Node.js v20+
 
-### Database
-Update the `DATABASE_URL` in `backend/.env` with your PostgreSQL instance (e.g. Neon).
+### Database Configuration
+Update the `DATABASE_URL` in `backend/.env` with your PostgreSQL instance (e.g., Neon Postgres).
 
-### Backend
+### Starting the Backend
 ```bash
 cd backend
 npm install
 npx prisma db push
-npx prisma db seed      # Executes the tsx seed script mapped natively in package.json
+npx prisma db seed      # Executes the nested tsx seed script 
 npm run dev
 ```
-The backend API runs on `http://localhost:3001`.
+> The backend API runs cleanly on `http://localhost:3001`.
 
-### Frontend
+### Starting the Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-The frontend UI runs on `http://localhost:5173`.
+> The frontend UI spins up on `http://localhost:5173` (or the nearest available Vite port).
 
-## Testing
+---
+
+## 🧪 Testing
+
 The core Hexagonal domain logic is strictly type-checked (`strict: true`) and heavily tested using Jest (`backend`). The UI component adapters are asserted using Vitest and React Testing Library (`frontend`).
+
 ```bash
 # Backend (Supertest integrations & Jest unit logic)
-cd backend
-npm test
+cd backend && npm test
 
 # Frontend (Vitest JSDOM components)
-cd frontend
-npm test
+cd frontend && npm test
 ```
-- Includes mathematically verified validations of the greedy Pool algorithms.
-- Includes integration checks leveraging Supertest to isolate constraints (e.g. negative CB banking blocks).
 
-## Sample Requests & Responses
+---
 
-**Get Compliance Balance (Adjusted)**
+## 📡 Sample Requests & Responses
+
+<details>
+<summary><b>Get Compliance Balance (Adjusted)</b></summary>
+
 ```bash
 curl -X GET "http://localhost:3001/compliance/adjusted-cb?shipId=R001&year=2024"
 ```
+
 *Response:*
 ```json
 {
@@ -90,13 +119,17 @@ curl -X GET "http://localhost:3001/compliance/adjusted-cb?shipId=R001&year=2024"
   "adjustedCB": -12502100
 }
 ```
+</details>
 
-**Create a Compliance Pool (POST)**
+<details>
+<summary><b>Create a Compliance Pool (POST)</b></summary>
+
 ```bash
 curl -X POST "http://localhost:3001/pools" \
      -H "Content-Type: application/json" \
      -d '{"year":2024,"members":["R001","R002"]}'
 ```
+
 *Response:*
 ```json
 {
@@ -111,16 +144,26 @@ curl -X POST "http://localhost:3001/pools" \
   }
 }
 ```
+</details>
 
-## Platform Demonstration
+---
 
-Below are screenshots of the live platform interacting with the Routes registry, the isolated Banking execution, and the live Article 21 Pooling simulator evaluating runtime mathematical constraints:
+## 📺 Platform Demonstration
 
-**Routes Registry** — vessel filtering across all seeded routes:
+Below are high-resolution screenshots of the live platform utilizing its optimized **Glassmorphism UI** across the four primary regulation stages:
+
+### 1️⃣ Routes Registry
+Vessel filtering across all seeded routes with status tracking.
 ![FuelEU Routes Registry](./docs/fueleu_routes.png)
 
-**Banking Dashboard (Art. 20)** — compliance balance loading for R001, 2024:
+### 2️⃣ GHG Intensity Comparisons
+Visual bar-chart scaling of actual GHG intensities against the rigid 2025 Target Requirement (89.34 gCO₂e/MJ).
+![FuelEU Comparison UI](./docs/fueleu_compare.png)
+
+### 3️⃣ Banking Dashboard (Art. 20)
+Live isolation of Compliance Balances (e.g. R001 computing a deficit of -340,956,000 gCO₂e).
 ![FuelEU Banking Dashboard](./docs/fueleu_banking.png)
 
-**Pooling Simulator (Art. 21)** — live projected pool sum with constraint validation:
+### 4️⃣ Pooling Simulator (Art. 21)
+Real-time pool projecting evaluating mathematical constraint validation (ensuring deficits don't sink surplus vessels into negatives).
 ![FuelEU Pooling Simulator](./docs/fueleu_pooling.png)

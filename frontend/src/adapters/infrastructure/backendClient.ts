@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { RouteData, ComparisonResult, ShipCompliance, BankEntry, PoolData } from '../../core/domain/types';
 
-// The backend runs on 3001
-const API = axios.create({ baseURL: 'http://localhost:3001' });
+// Use environment variable if provided, otherwise default to 3001
+const API = axios.create({ 
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001' 
+});
 
 export const backendClient = {
   getRoutes: async (): Promise<RouteData[]> => {

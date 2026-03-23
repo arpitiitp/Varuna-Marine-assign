@@ -49,8 +49,8 @@ export function CompareTab() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mt-8">
-        <table className="w-full text-sm text-left">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mt-8 overflow-x-auto">
+        <table className="w-full text-sm text-left whitespace-nowrap">
           <thead className="bg-slate-50 text-slate-600 font-medium border-b border-slate-200">
             <tr>
               <th className="px-6 py-4">Comparison Route</th>
@@ -67,18 +67,18 @@ export function CompareTab() {
                 </td>
                 <td className="px-6 py-4 text-slate-800 font-medium">{route.ghgIntensity.toFixed(2)}</td>
                 <td className="px-6 py-4 text-right">
-                  <span className={`font-medium ${percentDiff > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
+                  <span className={`font-medium ${percentDiff > 0 ? 'text-red-500' : 'text-emerald-500'}`} title={`Relative to the Baseline (${baseline.ghgIntensity.toFixed(2)})`}>
                     {percentDiff > 0 ? '+' : ''}{percentDiff.toFixed(2)}%
                   </span>
                 </td>
                 <td className="px-6 py-4 text-center">
                   {isCompliant ? (
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm" title="Actual GHG Intensity is ≤ 89.3368">
                       <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                       Compliant (Surplus)
                     </span>
                   ) : (
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 shadow-sm">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 shadow-sm" title="Actual GHG Intensity is > 89.3368">
                       <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                       Deficit Status
                     </span>
@@ -88,6 +88,73 @@ export function CompareTab() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* GHG Intensity Comparison Chart */}
+      <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mt-8 relative">
+        <h3 className="text-lg font-semibold text-slate-800 mb-2">GHG Intensity Visualization (Target: 89.34)</h3>
+        {/* Legend */}
+        <div className="flex items-center gap-4 mb-6 text-xs text-slate-600 font-medium">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded bg-slate-400"></div>
+            <span>Base Allowance</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded bg-emerald-400"></div>
+            <span>Surplus Gap (Compliant)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded bg-rose-500"></div>
+            <span>Deficit Margin (Penalty)</span>
+          </div>
+        </div>
+        <div className="space-y-4 relative">
+          {/* Baseline Bar */}
+          <div className="relative">
+            <div className="flex justify-between text-xs mb-1">
+              <span className="font-semibold text-blue-700">{baseline.routeId} (Baseline)</span>
+              <span className="text-slate-500">{baseline.ghgIntensity.toFixed(2)}</span>
+            </div>
+            <div className="w-full bg-slate-100 rounded-full h-4 overflow-hidden flex">
+               {baseline.ghgIntensity <= 89.3368 ? (
+                 <>
+                   <div className="bg-slate-400 h-full" style={{ width: `${(baseline.ghgIntensity / 100) * 100}%` }} title="Actual Intensity"></div>
+                   <div className="bg-emerald-400 h-full" style={{ width: `${((89.3368 - baseline.ghgIntensity) / 100) * 100}%` }} title="Surplus Margin"></div>
+                 </>
+               ) : (
+                 <>
+                   <div className="bg-slate-400 h-full" style={{ width: `${(89.3368 / 100) * 100}%` }} title="Target Allowance"></div>
+                   <div className="bg-rose-500 h-full" style={{ width: `${((baseline.ghgIntensity - 89.3368) / 100) * 100}%` }} title="Deficit Margin"></div>
+                 </>
+               )}
+            </div>
+          </div>
+          
+          {/* Comparison Routes Bars */}
+          {comparison.comparisonRoutes.map(({ route, isCompliant }) => (
+            <div key={`chart-${route.id}`} className="relative">
+              <div className="flex justify-between text-xs mb-1">
+                <span className="font-medium text-slate-700">{route.routeId}</span>
+                <span className="text-slate-500">{route.ghgIntensity.toFixed(2)}</span>
+              </div>
+              <div className="w-full bg-slate-100 rounded-full h-4 overflow-hidden flex">
+                 {route.ghgIntensity <= 89.3368 ? (
+                   <>
+                     <div className="bg-slate-400 h-full" style={{ width: `${(route.ghgIntensity / 100) * 100}%` }} title="Actual Intensity"></div>
+                     <div className="bg-emerald-400 h-full" style={{ width: `${((89.3368 - route.ghgIntensity) / 100) * 100}%` }} title="Surplus Margin"></div>
+                   </>
+                 ) : (
+                   <>
+                     <div className="bg-slate-400 h-full" style={{ width: `${(89.3368 / 100) * 100}%` }} title="Target Allowance"></div>
+                     <div className="bg-rose-500 h-full" style={{ width: `${((route.ghgIntensity - 89.3368) / 100) * 100}%` }} title="Deficit Margin"></div>
+                   </>
+                 )}
+              </div>
+            </div>
+          ))}
+
+          {/* Target line removed per user request */}
+        </div>
       </div>
     </div>
   );

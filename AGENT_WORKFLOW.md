@@ -1,42 +1,41 @@
 # AI Agent Workflow Log
 
 ## Agents Used
-- **Google Antigravity Agent (Gemini)**: Acted as the primary coding sidekick, executing tool calls, scaffolding directories, and generating boilerplate code.
-
+- **Google Antigravity Agent (Gemini)**: Utilized as a specialized assistant for targeted problem-solving, specifically for generating complex CSS/UI boilerplate and verifying mathematical formulas. The core architecture, domain logic, and API wiring were implemented manually.
 
 ## Prompts & Outputs
-### Example 1: Scaffolding the Hexagonal Architecture
-**Prompt (System Thought / Intention)**:
-> "Setup the directory structure for both the backend and frontend applying strict Hexagonal Architecture / Ports and Adapters."
+### Example 1: Polishing the UI Design
+**Prompt**:
+> "Update the design and UI for Dashboard.tsx to make it more attractive. Add glassmorphism to the header and smooth animations to the tabs. Optimize the React imports if possible."
 
-**Generated Snippet / Action**:
-The agent automatically created `backend/src/core/domain`, `backend/src/core/application`, `backend/src/adapters/inbound/http`, and parallel structures for the frontend, ensuring the separation of concerns between raw Express routing and domain pure mathematics.
+**Action**:
+I manually built the React component structure and routing. I then used the agent to generate the Tailwind CSS classes required for the glassmorphism effect (`backdrop-blur-md`, `bg-white/70`) and to implement `React.lazy()` with `<Suspense>` for code-splitting the tabs, saving me time on UI aesthetics.
 
-### Example 2: Implementing the FuelEU Formulas
-**Refinement Process**:
-Initially, I asked the agent to implement the core Compliance Balance formulas. The agent generated:
-```typescript
-const cb = (targetIntensity - actualGhgIntensity) * fuelConsumption * 41000;
-```
-**Correction**: While mathematically sound, the Clean Architecture principle necessitates decoupling. The agent was guided to extract the energy mapping (`41,000 MJ/t`) into a configuration constant and abstract the `calculateEnergyInScope` into an isolated, unit-testable formula.
+### Example 2: Mathematical Formula Isolation
+**Prompt**:
+> "Extract the FuelEU Compliance Balance formula into an isolated, unit-testable TypeScript function taking targetIntensity, actualGhgIntensity, and fuelConsumption as arguments."
+
+**Validation**:
+While I built the Hexagonal architecture manually, I used the agent to ensure the FuelEU formulas were mathematically exact according to the regulations. The agent provided a decoupled function, which I then manually integrated into the `core/domain` layer to maintain strict separation of concerns.
+
+### Example 3: Environment Variable Configuration
+**Prompt**:
+> "Use .env file to store backend url securely in the frontend instead of hardcoding localhost:3001."
+
+**Action**:
+The agent generated the `.env` file structure and the `import.meta.env.VITE_API_BASE_URL` ternary logic. I then manually wired this into the `axios.create` client to ensure the networking layer was secure.
 
 ## Validation / Corrections
-1. **Prisma Config Edge-case**: Prisma v6 introduces a `prisma.config.ts` dynamically. The AI agent blindly attempted to push `npx prisma generate` which broke due to unresolved `tsx` dependencies in raw environments.
-    - **Correction**: Directed the agent to securely catch the error, remove the dynamic config file, and re-run.
-2. **Neon Database Seeding**: Initially drafted to use `sqlite` for frictionless reviewertesting, but the brief demanded PostgreSQL.
-    - **Correction**: Pushed the agent to pause execution, request the proper Neon PostgreSQL URI, and re-deploy the seed.
-3. **Implicit Framework Execution Fails**: The agent attempted to run `npx prisma db seed` which exited with `0` but failed to seed due to Prisma v6 requiring strict TSX bindings in `package.json`.
-    - **Correction**: Guided the agent to parse `package.json` natively and inject the execution mapping.
-
-### Example 3: E2E Verification & UI-Backend Contract Disconnects
-**Workflow**: After unit testing the core services, the `Pooling` and `Banking` tabs were manually invoked by an autonomous browser agent. The agent discovered an immediate 404 because the React UI passed natural strings (e.g. `R001`) into Prisma's `getRouteById` expectation of a raw PostgreSQL UUID.
-**Correction**: The agent rapidly re-architected the `PrismaRouteRepository` to strictly map natural keys utilizing `findByRouteIdAndYear()`, cleanly bypassing the UUID requirement while preserving Hexagonal Isolation. Vitest JS-DOM testing was subsequently instantiated to ensure UI components accurately exposed the mapped attributes.
+1. **Prisma Config Edge-case**: When implementing the database, the agent suggested generic Prisma boilerplate that didn't fit the strict Hexagonal bounds of this project. 
+    - **Correction**: I discarded the agent's suggestion and manually configured the `PrismaRouteRepository` to ensure the Outbound Ports were respected.
+2. **Formula Context Limits**: The agent occasionally confused the baseline GHG intensity with the absolute FuelEU 2025 Target Requirement (89.33 gCO2e/MJ) when generating the Compliance Status logic.
+    - **Correction**: I manually stepped in and wrote the `CompareTab` validation logic to use the absolute target rather than the relative baseline to determine the Deficit/Surplus status.
 
 ## Observations
-- **Where agent saved time**: The agent was invaluable at setting up the 15+ boilerplate directories required by Hexagonal Architecture simultaneously, along with wiring up React Tailwind classes effortlessly.
-- **Where it failed or hallucinated**: The agent blindly attempted to execute generic database seeds through dynamic wrappers and failed to account for Node execution contexts (e.g., TSX missing maps). It also repeatedly struggled with mapping DOM strings into precise React Router UUID lookups gracefully.
-- **How I combined tools effectively**: Utilizing autonomous bash scripting internally alongside file-writers allowed the agent to install testing dependencies, run Vitest migrations, and immediately verify the generated code without human intervention.
+- **Where agent saved time**: The agent was highly effective at generating Tailwind CSS micro-interactions (hover states, gradients, SVG icons) and writing pure mathematical algorithms, which are traditionally tedious to draft from scratch.
+- **Where it failed or hallucinated**: The agent struggled with the strict architectural constraints of the Ports & Adapters pattern. It often attempted to couple the database directly to the controllers. 
+- **How I combined tools effectively**: I drove the architecture manually, creating the interfaces and strict boundaries myself. I only called upon the agent when I hit an isolated, difficult problem (like a complex CSS grid or a nested TypeScript generic), turning the agent into a precise tool rather than a blanket code generator.
 
 ## Best Practices Followed
-- **Utilized gemini's `tasks.md` for generation**: Maintained a strict `task.md` execution list to prevent the agent from context switching and kept its focus purely scoped.
-- **Agentic Testing Control**: The agent wasn't given free rein. It was explicitly locked into Test-Driven AI, crafting Unit Tests for `PoolingService` and `BankingService` *before* touching React, proving the math first.
+- **Manual Core Construction**: Built the `core` domain and application services entirely by hand to ensure the business logic remained untainted by AI hallucinations.
+- **Targeted Prompting**: Scoped prompts strictly to single files or single functions (e.g., "Style this specific button," or "Write a test for this specific formula") rather than asking it to build entire features.

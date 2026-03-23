@@ -10,11 +10,13 @@ export function RoutesTab() {
   if (loading) return <div className="p-4 text-center text-slate-500 animate-pulse">Loading routes data...</div>;
   if (error) return <div className="p-4 text-center text-red-500 bg-red-50 rounded-lg">{error}</div>;
 
-  const filteredRoutes = routes.filter(r => {
-    return (filterVessel ? r.vesselType.toUpperCase().includes(filterVessel.toUpperCase()) : true) &&
-      (filterFuel ? r.fuelType.toUpperCase().includes(filterFuel.toUpperCase()) : true) &&
-      (filterYear ? r.year.toString().includes(filterYear) : true);
-  });
+  const filteredRoutes = routes
+    .filter(r => {
+      return (filterVessel ? r.vesselType.toUpperCase().includes(filterVessel.toUpperCase()) : true) &&
+        (filterFuel ? r.fuelType.toUpperCase().includes(filterFuel.toUpperCase()) : true) &&
+        (filterYear ? r.year.toString().includes(filterYear) : true);
+    })
+    .sort((a, b) => (b.isBaseline ? 1 : 0) - (a.isBaseline ? 1 : 0));
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
