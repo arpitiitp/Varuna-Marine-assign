@@ -63,28 +63,88 @@ The frontend cleanly mirrors the backend's architecture, structurally separating
 
 ## 🚀 Setup & Run Instructions
 
-**Prerequisites**: Node.js v20+
+### Prerequisites
 
-### Database Configuration
-Update the `DATABASE_URL` in `backend/.env` with your PostgreSQL instance (e.g., Neon Postgres).
+| Requirement | Version |
+|---|---|
+| Node.js | v20+ |
+| PostgreSQL | Any hosted instance (e.g., [Neon](https://neon.tech)) |
 
-### Starting the Backend
+---
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/arpitiitp/Varuna-Marine-assign.git
+cd Varuna-Marine-assign
+```
+
+---
+
+### 2. Backend Setup
+
+#### a. Configure Environment Variables
+
+Copy the example env file and fill in your database connection string:
+
 ```bash
 cd backend
+cp .env.example .env
+```
+
+Edit `backend/.env`:
+
+```env
+DATABASE_URL="postgresql://user:password@host/db"
+PORT=3001
+```
+
+> Replace the placeholder values with your actual PostgreSQL credentials (e.g., from [Neon](https://neon.tech)).
+
+#### b. Install Dependencies & Start
+
+```bash
+# Install all backend dependencies
 npm install
+
+# Push the Prisma schema to your database
 npx prisma db push
-npx prisma db seed      # Executes the nested tsx seed script 
+
+# Seed the database with sample ship/route data
+npx prisma db seed
+
+# Start the development server (tsx watch — hot reload)
 npm run dev
 ```
-> The backend API runs cleanly on `http://localhost:3001`.
 
-### Starting the Frontend
+> ✅ Backend API is live at **`http://localhost:3001`**
+
+---
+
+### 3. Frontend Setup
+
+Open a **new terminal** at the project root:
+
 ```bash
 cd frontend
+
+# Install all frontend dependencies
 npm install
+
+# Start the Vite development server
 npm run dev
 ```
-> The frontend UI spins up on `http://localhost:5173` (or the nearest available Vite port).
+
+> ✅ Frontend UI is live at **`http://localhost:5173`** (or next available port)
+
+---
+
+### Quick Reference
+
+| Service | Command | URL |
+|---|---|---|
+| Backend (API) | `cd backend && npm run dev` | `http://localhost:3001` |
+| Frontend (UI) | `cd frontend && npm run dev` | `http://localhost:5173` |
 
 ---
 
