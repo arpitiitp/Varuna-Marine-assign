@@ -27,7 +27,8 @@ export function BankingTab() {
             <label className="block text-sm font-medium text-slate-700 mb-1">Route / Ship ID</label>
             <input
               type="text"
-              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              aria-label="Route or Ship ID"
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
               value={shipId} onChange={e => setShipId(e.target.value)}
               placeholder="e.g. R001"
             />
@@ -36,7 +37,8 @@ export function BankingTab() {
             <label className="block text-sm font-medium text-slate-700 mb-1">Compliance Year</label>
             <input
               type="number"
-              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              aria-label="Compliance year"
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
               value={year} onChange={e => setYear(e.target.value)}
               placeholder="e.g. 2024"
             />
@@ -51,7 +53,20 @@ export function BankingTab() {
         {error && <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>}
       </div>
 
-      {loading && <div className="p-4 text-center text-slate-500 animate-pulse border border-slate-100 rounded-2xl bg-white">Loading snapshot...</div>}
+      {loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[0, 1].map(i => (
+            <div key={i} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-4">
+              <div className="skeleton h-4 w-32" />
+              <div className="skeleton h-10 w-40" />
+              <div className="skeleton h-4 w-48" />
+              <div className="mt-6 pt-6 border-t border-slate-100">
+                <div className="skeleton h-10 w-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {!loading && cbRecord && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

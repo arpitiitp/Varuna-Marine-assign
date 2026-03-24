@@ -22,7 +22,7 @@ export function PoolingTab() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="bg-gradient-to-r from-blue-900 to-indigo-900 p-8 rounded-2xl shadow-lg border border-blue-800 text-white relative overflow-hidden">
+      <div className="bg-gradient-to-r from-teal-800 to-blue-900 p-8 rounded-2xl shadow-lg border border-teal-700/50 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 p-12 opacity-10">
           <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" /></svg>
         </div>
@@ -76,9 +76,15 @@ export function PoolingTab() {
             </div>
             <div>
               {poolPreview.isValid ? (
-                <span className="flex items-center gap-2 text-emerald-400 text-sm font-medium">Valid Pool ✓</span>
+                <span className="flex items-center gap-2 text-emerald-400 text-sm font-medium">
+                  <svg aria-hidden="true" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" /></svg>
+                  Valid Pool
+                </span>
               ) : (
-                <span className="flex items-center gap-2 text-rose-400 text-sm font-medium">Invalid Sum ✗</span>
+                <span className="flex items-center gap-2 text-rose-400 text-sm font-medium">
+                  <svg aria-hidden="true" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                  Invalid Sum
+                </span>
               )}
             </div>
           </div>

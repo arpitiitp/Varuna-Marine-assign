@@ -7,7 +7,26 @@ export function RoutesTab() {
   const [filterFuel, setFilterFuel] = useState('');
   const [filterYear, setFilterYear] = useState('');
 
-  if (loading) return <div className="p-4 text-center text-slate-500 animate-pulse">Loading routes data...</div>;
+  if (loading) return (
+    <div className="space-y-6 animate-in fade-in duration-300">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-100">
+          <div className="skeleton h-6 w-40" />
+        </div>
+        <div className="divide-y divide-slate-100">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="flex gap-6 px-6 py-4">
+              <div className="skeleton h-4 w-16" />
+              <div className="skeleton h-4 w-24" />
+              <div className="skeleton h-4 w-20" />
+              <div className="skeleton h-4 w-12" />
+              <div className="skeleton h-4 flex-1" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
   if (error) return <div className="p-4 text-center text-red-500 bg-red-50 rounded-lg">{error}</div>;
 
   const filteredRoutes = routes
@@ -26,20 +45,23 @@ export function RoutesTab() {
         <div className="flex flex-wrap gap-3">
           <input
             type="text"
+            aria-label="Filter by vessel type"
             placeholder="Filter by Vessel..."
-            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
             value={filterVessel} onChange={(e) => setFilterVessel(e.target.value)}
           />
           <input
             type="text"
+            aria-label="Filter by fuel type"
             placeholder="Filter by Fuel..."
-            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
             value={filterFuel} onChange={(e) => setFilterFuel(e.target.value)}
           />
           <input
             type="text"
+            aria-label="Filter by compliance year"
             placeholder="Filter by Year..."
-            className="px-4 py-2 w-32 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="px-4 py-2 w-32 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
             value={filterYear} onChange={(e) => setFilterYear(e.target.value)}
           />
         </div>
@@ -94,7 +116,15 @@ export function RoutesTab() {
               ))}
               {filteredRoutes.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-6 py-8 text-center text-slate-500">No routes found matching the filters.</td>
+                  <td colSpan={8} className="px-6 py-12 text-center">
+                    <div className="flex flex-col items-center gap-2">
+                      <svg aria-hidden="true" className="w-8 h-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                      <p className="text-slate-500 font-medium">No routes match your filters.</p>
+                      <p className="text-slate-400 text-xs">Try clearing one or more filters above.</p>
+                    </div>
+                  </td>
                 </tr>
               )}
             </tbody>

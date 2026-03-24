@@ -17,29 +17,43 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 flex flex-col">
+    <div className="min-h-screen bg-slate-50/50 text-slate-900 font-sans selection:bg-cyan-100 selection:text-cyan-900 flex flex-col">
       {/* Glassmorphic Top Navbar */}
-      <header className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all duration-300">
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3 group cursor-pointer">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-md transform group-hover:scale-105 transition-transform duration-300">
-                <svg className="w-5 h-5 text-white animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            <div className="flex items-center gap-3">
+              {/* Static anchor icon — ocean teal-to-navy gradient */}
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-600 to-blue-900 flex items-center justify-center shadow-md">
+                <svg
+                  aria-label="FuelEU Maritime Platform logo"
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                >
+                  {/* Anchor icon */}
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4a2 2 0 100 4 2 2 0 000-4zm0 4v12M4 12h16M4 17c0 2.761 3.582 5 8 5s8-2.239 8-5" />
                 </svg>
               </div>
-              <h1 className="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">
+              <h1
+                className="text-xl font-extrabold tracking-tight text-slate-800"
+                style={{ fontFamily: 'Sora, system-ui, sans-serif' }}
+              >
                 FuelEU Maritime Platform
               </h1>
             </div>
+            {/* Regulation badge */}
+
           </div>
         </div>
       </header>
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
-        {/* Animated Tabs */}
-        <div className="bg-white rounded-2xl p-2 shadow-sm border border-slate-100/50 max-w-fit mx-auto sm:mx-0">
-          <nav className="flex space-x-1 overflow-x-auto hide-scrollbar" aria-label="Tabs">
+        {/* Tab Bar */}
+        <div className="bg-white rounded-2xl p-1.5 shadow-sm border border-slate-100 max-w-fit mx-auto sm:mx-0">
+          <nav className="flex space-x-1 overflow-x-auto" style={{ scrollbarWidth: 'none' }} aria-label="Main navigation tabs">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -47,20 +61,24 @@ export function Dashboard() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`
-                    relative flex items-center gap-2 whitespace-nowrap py-2.5 px-5 rounded-xl text-sm font-semibold transition-all duration-300 ease-out
+                    relative flex items-center gap-2 whitespace-nowrap py-2.5 px-5 rounded-xl text-sm font-semibold
+                    transition-all duration-200 ease-out border-b-2
                     ${isActive
-                      ? 'text-blue-700 bg-blue-50/80 shadow-sm ring-1 ring-blue-100/50'
-                      : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'}
+                      ? 'text-teal-700 bg-teal-50/80 border-teal-600 shadow-sm'
+                      : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50 border-transparent'}
                   `}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  <svg className={`w-4 h-4 transition-colors ${isActive ? 'text-blue-600' : 'text-slate-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg
+                    aria-hidden="true"
+                    className={`w-4 h-4 transition-colors ${isActive ? 'text-teal-600' : 'text-slate-400'}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={tab.icon} />
                   </svg>
                   {tab.label}
-                  {isActive && (
-                     <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-t-full rounded-b-none" />
-                  )}
                 </button>
               );
             })}
@@ -72,8 +90,8 @@ export function Dashboard() {
           <Suspense fallback={
             <div className="w-full h-64 flex items-center justify-center">
               <div className="flex flex-col items-center gap-3">
-                 <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                 <p className="text-sm font-medium text-slate-500 animate-pulse">Loading module...</p>
+                <div className="w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
+                <p className="text-sm font-medium text-slate-500">Loading module...</p>
               </div>
             </div>
           }>
@@ -85,13 +103,14 @@ export function Dashboard() {
         </div>
       </main>
 
-      <footer className="bg-white/50 backdrop-blur border-t border-slate-200/50 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <p className="text-center text-sm font-medium text-slate-400">
-            Powered by modern web technologies • FuelEU Maritime Compliance
+      <footer className="bg-white/60 backdrop-blur border-t-2 border-teal-600/20 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p className="text-sm font-medium text-slate-400">
+            FuelEU Maritime Platform · Build 1.0.0
           </p>
         </div>
       </footer>
     </div>
   );
 }
+

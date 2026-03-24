@@ -27,16 +27,16 @@ export function CompareTab() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Baseline Card */}
-        <div className="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white/10 blur-2xl"></div>
-          <p className="text-blue-100 font-medium text-sm mb-1 z-10 relative">BASELINE ({baseline.year})</p>
+        <div className="bg-gradient-to-br from-teal-600 to-blue-900 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white/10 blur-2xl" aria-hidden="true"></div>
+          <p className="text-teal-100 font-medium text-sm mb-1 z-10 relative">BASELINE ({baseline.year})</p>
           <div className="flex items-baseline gap-2 z-10 relative">
             <h3 className="text-4xl font-bold tracking-tight">{baseline.ghgIntensity.toFixed(2)}</h3>
-            <span className="text-blue-200">gCO₂e/MJ</span>
+            <span className="text-teal-200">gCO₂e/MJ</span>
           </div>
-          <div className="mt-6 pt-4 border-t border-blue-400/30 text-sm flex justify-between z-10 relative">
-            <span className="text-blue-100">Vessel: {baseline.vesselType}</span>
-            <span className="text-blue-100 font-semibold">{baseline.routeId}</span>
+          <div className="mt-6 pt-4 border-t border-teal-400/30 text-sm flex justify-between z-10 relative">
+            <span className="text-teal-100">Vessel: {baseline.vesselType}</span>
+            <span className="text-teal-100 font-semibold">{baseline.routeId}</span>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ export function CompareTab() {
               <span className="font-semibold text-blue-700">{baseline.routeId} (Baseline)</span>
               <span className="text-slate-500">{baseline.ghgIntensity.toFixed(2)}</span>
             </div>
-            <div className="w-full bg-slate-100 rounded-full h-4 overflow-hidden flex">
+            <div className="w-full bg-slate-100 rounded-full h-5 overflow-hidden flex">
                {baseline.ghgIntensity <= 89.3368 ? (
                  <>
                    <div className="bg-slate-400 h-full" style={{ width: `${(baseline.ghgIntensity / 100) * 100}%` }} title="Actual Intensity"></div>
@@ -137,7 +137,7 @@ export function CompareTab() {
                 <span className="font-medium text-slate-700">{route.routeId}</span>
                 <span className="text-slate-500">{route.ghgIntensity.toFixed(2)}</span>
               </div>
-              <div className="w-full bg-slate-100 rounded-full h-4 overflow-hidden flex">
+              <div className="w-full bg-slate-100 rounded-full h-5 overflow-hidden flex">
                  {route.ghgIntensity <= 89.3368 ? (
                    <>
                      <div className="bg-slate-400 h-full" style={{ width: `${(route.ghgIntensity / 100) * 100}%` }} title="Actual Intensity"></div>

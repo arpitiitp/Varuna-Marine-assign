@@ -1,10 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  /* We can define custom theme variables here */
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --color-primary-500: #0ea5e9;
-  --color-primary-600: #0284c7;
+  /* Typography */
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-display: 'Sora', system-ui, sans-serif;
+
+  /* Ocean palette — primary brand */
+  --color-ocean-50:  #f0f9ff;
+  --color-ocean-100: #e0f2fe;
+  --color-ocean-200: #b9e4fa;
+  --color-ocean-500: #0e7490;
+  --color-ocean-600: #0c6882;
+  --color-ocean-700: #0a5c74;
+  --color-ocean-800: #083d52;
+  --color-ocean-900: #062c3d;
+
+  /* Semantic tokens */
+  --color-primary-500: #0e7490;
+  --color-primary-600: #0c6882;
+
+  /* Success / Danger */
+  --color-success-50:  #ecfdf5;
+  --color-success-600: #059669;
+  --color-danger-50:   #fff1f2;
+  --color-danger-600:  #e11d48;
 }
 
 body {
@@ -12,4 +31,17 @@ body {
   font-family: var(--font-sans);
   background-color: #f8fafc;
   color: #0f172a;
+}
+
+/* Skeleton shimmer utility */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 6px;
 }
